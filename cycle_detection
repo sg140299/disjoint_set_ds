@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Graph{
+    public:
+    vector<int> par,sz;
+    int total_comp;
+    
+    void init(int n){
+        par.resize(n);
+        sz.resize(n);
+        for(int i=0;i<n;i++)par[i]=i;
+        for(int i=0;i<n;i++)sz[i]=1;
+        int total_comp=n;
+    }
+    int super_parent(int x){
+        if(x==par[x])return x;
+        else return par[x]=super_parent(par[x]);
+    }
+    void unite(int x,int y){
+        int super_parent_x=super_parent(x);
+        int super_parent_y=super_parent(y);
+        if(super_parent_x!=super_parent_y){
+            par[super_parent_x]=super_parent_y;
+            sz[super_parent_y]+=sz[super_parent_x];
+            sz[super_parent_x]=0;
+            total_comp-=1;
+        }
+    }
+}G;
+int main(){
+    int n,m;
+    cin>>n>>m;
+    G.init(n);
+    int x,y;
+    for(int i=0;i<m;i++){
+        cin>>x>>y;
+        if(G.super_parent(x)!=G.super_parent(y))
+        G.unite(x,y);
+        else
+        cout<<"Cycle is present ";
+
+    }
+   
+
+
+    return 0;
+}
